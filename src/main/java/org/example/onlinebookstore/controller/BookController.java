@@ -1,7 +1,6 @@
 package org.example.onlinebookstore.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.example.onlinebookstore.Entity.Book;
 import org.example.onlinebookstore.service.BookService;
@@ -37,13 +36,19 @@ public class BookController {
     }
 
     // Endpoint to get a book by its ID
-    @GetMapping("/books/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable Long id) {
-        Optional<Book> book = Optional.ofNullable(bookService.getBookById(id));
-        return book.map(ResponseEntity::ok)
-                   .orElseGet(() -> ResponseEntity.notFound().build());
+        Book book = bookService.getBookById(id); // Fetching the book by ID
+        return ResponseEntity.ok(book); // Returning the book details
     }
-    
+
+    //Duplicate method for git testing function
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Book> findBookById(@PathVariable Long id) {
+
+        Book book = bookService.getBookById(id); // Fetching the book by ID
+        return ResponseEntity.ok(book); // Returning the book details
+    }
 
     // Endpoint to update an existing book
     @PutMapping("/{id}")
