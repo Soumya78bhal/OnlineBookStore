@@ -29,11 +29,13 @@ public class BookController {
     }
 
     // Endpoint to get a book by its ID
-    @GetMapping("/{id}")
+    @@GetMapping("/books/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable Long id) {
-        Book book = bookService.getBookById(id); // Fetching the book by ID
-        return ResponseEntity.ok(book); // Returning the book details
+        Optional<Book> book = bookRepository.findById(id);
+        return book.map(ResponseEntity::ok)
+                   .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    
 
     // Endpoint to update an existing book
     @PutMapping("/{id}")
