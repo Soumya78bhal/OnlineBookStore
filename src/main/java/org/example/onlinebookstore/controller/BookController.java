@@ -1,12 +1,20 @@
 package org.example.onlinebookstore.controller;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.example.onlinebookstore.Entity.Book;
 import org.example.onlinebookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.example.onlinebookstore.Entity.Book;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/books") // Base path for all endpoints in this controller
@@ -29,9 +37,9 @@ public class BookController {
     }
 
     // Endpoint to get a book by its ID
-    @@GetMapping("/books/{id}")
+    @GetMapping("/books/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable Long id) {
-        Optional<Book> book = bookRepository.findById(id);
+        Optional<Book> book = Optional.ofNullable(bookService.getBookById(id));
         return book.map(ResponseEntity::ok)
                    .orElseGet(() -> ResponseEntity.notFound().build());
     }
